@@ -29,7 +29,7 @@ public class GraphPartialTester {
 	 */
 	public void setUp () throws IOException {
 		imdbGraph = new IMDBGraphImpl("actors_test.list", "actresses_test.list");
-		searchEngine = new GraphSearchEngineImpl();
+		//searchEngine = new GraphSearchEngineImpl();
 	}
 
 	@Test

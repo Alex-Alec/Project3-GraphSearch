@@ -4,27 +4,44 @@ import java.util.stream.*;
 import java.util.function.*;
 
 public class IMDBGraphImpl implements IMDBGraph {
+	private static List<ActorNode> actorList;
+	private static List<MovieNode> movieList;
+
 	// Implement me
 	public IMDBGraphImpl (String actorsFilename, String actressesFilename) throws IOException {
+		actorList = new ArrayList<>();
+		movieList = new ArrayList<>();
+		processActors(actorsFilename);
+		processActors(actressesFilename);
 	}
 
 	// Implement me
 	public Collection<? extends Node> getActors () {
-		return null;
+		return actorList;
 	}
 
 	// Implement me
 	public Collection<? extends Node> getMovies () {
-		return null;
+		return movieList;
 	}
 
 	// Implement me
 	public Node getMovie (String name) {
+		for(MovieNode movie: movieList){
+			if(name.equals(movie.getName())){
+				return movie;
+			}
+		}
 		return null;
 	}
 
 	// Implement me
 	public Node getActor (String name) {
+		for(ActorNode actor: actorList){
+			if(name.equals(actor.getName())){
+				return actor;
+			}
+		}
 		return null;
 	}
 
@@ -55,23 +72,39 @@ public class IMDBGraphImpl implements IMDBGraph {
 		}
 		s.nextLine();  // read one more
 
-		String actorName = null;
+		ActorNode mostRecent = null;
 		while (s.hasNextLine()) {
 			final String line = s.nextLine();
-
 			//System.out.println(line);
 			if (line.indexOf("\t") >= 0) {  // new movie, either for an existing or a new actor
 				int idxOfTab = line.indexOf("\t");
 				if (idxOfTab > 0) {  // not at beginning of line => new actor
-					actorName = line.substring(0, idxOfTab);
-
+					String actorName = line.substring(0, idxOfTab);
+					ActorNode newActor = new ActorNode(actorName);
+					actorList.add(newActor);
+					mostRecent = newActor;
 					// We have found a new actor...
 					//System.out.println(actorName);
 				}
 				if (line.indexOf("(TV)") < 0 && line.indexOf("\"") < 0) {  // Only include bona-fide movies
 					int lastIdxOfTab = line.lastIndexOf("\t");
 					final String movieName = parseMovieName(line.substring(lastIdxOfTab + 1));
+					boolean found = false;
+					for(MovieNode movie: movieList){
+						if(movie.getName().equals(movieName)){
+							movie.addActor(mostRecent);
+							actorList.get(actorList.size()-1).addMovie(movie);
+							found = true;
+							break;
+						}
+					}
 
+					if(!found){
+						MovieNode newMovie = new MovieNode(movieName);
+						newMovie.addActor(mostRecent);
+						movieList.add(newMovie);
+						actorList.get(actorList.size()-1).addMovie(newMovie);
+					}
 					// We have found a new movie
 					//System.out.println(movieName);
 				}
