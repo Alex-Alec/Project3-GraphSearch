@@ -7,14 +7,17 @@ public class ActorNode implements Node {
 	List<MovieNode> movies;
 
 	public ActorNode(String name){
+//		this.name = "";
 		movies = new ArrayList<>();
-		String[] parts = name.split(" ");
-		if(parts.length == 2){
-			parts[0].substring(0, parts[0].length()-1);
-			this.name = parts[1] + parts[0];
-		}else{
+//		String[] parts = name.split(" "); // "Abaffy, Rebecca"
+//		if(parts.length >= 2){
+//			parts[0] = parts[0].substring(0, parts[0].length()-1);
+//			for(int i = 1; i < parts.length;i++){
+//				this.name = this.name +  " "  + parts[i];
+//			}
+//			this.name = this.name + " " + parts[0];
+//		}else{
 			this.name = name;
-		}
 	}
 
 	public void addMovie(MovieNode movieNode){

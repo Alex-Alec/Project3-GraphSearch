@@ -73,20 +73,24 @@ public class IMDBGraphImpl implements IMDBGraph {
 		s.nextLine();  // read one more
 
 		ActorNode mostRecent = null;
+		int counter = -1;
 		while (s.hasNextLine()) {
 			final String line = s.nextLine();
 			//System.out.println(line);
 			if (line.indexOf("\t") >= 0) {  // new movie, either for an existing or a new actor
 				int idxOfTab = line.indexOf("\t");
 				if (idxOfTab > 0) {  // not at beginning of line => new actor
+					if(counter == 0){
+						actorList.remove(actorList.size()-1);
+					}
+					counter = 0;
 					String actorName = line.substring(0, idxOfTab);
 					ActorNode newActor = new ActorNode(actorName);
 					actorList.add(newActor);
 					mostRecent = newActor;
-					// We have found a new actor...
-					//System.out.println(actorName);
 				}
 				if (line.indexOf("(TV)") < 0 && line.indexOf("\"") < 0) {  // Only include bona-fide movies
+					counter++;
 					int lastIdxOfTab = line.lastIndexOf("\t");
 					final String movieName = parseMovieName(line.substring(lastIdxOfTab + 1));
 					boolean found = false;
@@ -105,10 +109,9 @@ public class IMDBGraphImpl implements IMDBGraph {
 						movieList.add(newMovie);
 						actorList.get(actorList.size()-1).addMovie(newMovie);
 					}
-					// We have found a new movie
-					//System.out.println(movieName);
 				}
 			}
 		}
+		s.close();
 	}
 }

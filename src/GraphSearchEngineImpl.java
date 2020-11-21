@@ -21,13 +21,20 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 			}
 		}
 
+		if(!visitedDistances.containsKey(t)){
+			return null;
+		}
 		List<Node> result = new ArrayList<>();
 		result.add(t);
 		Node current = t;
+
 		int shortestDistance = visitedDistances.get(t);
 		while(current != s){
 			shortestDistance--;
 			for(Node neighbor: current.getNeighbors()){
+				if(!visitedDistances.containsKey(neighbor)){
+					continue;
+				}
 				if(visitedDistances.get(neighbor) == shortestDistance){
 					result.add(neighbor);
 					current = neighbor;
