@@ -2,33 +2,43 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Node that stores an actor
+ */
 public class ActorNode implements Node {
 	String name;
 	List<MovieNode> movies;
 
+	/**
+	 * Constructor
+	 * @param name
+	 */
 	public ActorNode(String name){
-//		this.name = "";
 		movies = new ArrayList<>();
-//		String[] parts = name.split(" "); // "Abaffy, Rebecca"
-//		if(parts.length >= 2){
-//			parts[0] = parts[0].substring(0, parts[0].length()-1);
-//			for(int i = 1; i < parts.length;i++){
-//				this.name = this.name +  " "  + parts[i];
-//			}
-//			this.name = this.name + " " + parts[0];
-//		}else{
-			this.name = name;
+		this.name = name;
 	}
 
+	/**
+	 * Add movie to neighbors list
+	 * @param movieNode
+	 */
 	public void addMovie(MovieNode movieNode){
 		movies.add(movieNode);
 	}
 
+	/**
+	 * Get the name
+	 * @return name
+	 */
 	@Override
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Get the neighbors
+	 * @return movies
+	 */
 	@Override
 	public Collection<? extends Node> getNeighbors() {
 		return movies;

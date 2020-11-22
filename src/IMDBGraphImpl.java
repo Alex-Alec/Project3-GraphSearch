@@ -3,6 +3,9 @@ import java.util.*;
 import java.util.stream.*;
 import java.util.function.*;
 
+/**
+ * Implementation of IMDBGraph
+ */
 public class IMDBGraphImpl implements IMDBGraph {
 	private static List<ActorNode> actorList;
 	private static List<MovieNode> movieList;

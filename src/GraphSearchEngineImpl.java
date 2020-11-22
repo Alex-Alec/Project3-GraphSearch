@@ -1,5 +1,8 @@
 import java.util.*;
 
+/**
+ * Implementation of GraphSearchEngine
+ */
 public class GraphSearchEngineImpl implements GraphSearchEngine {
 
 	/**
