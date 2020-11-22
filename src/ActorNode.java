@@ -6,8 +6,8 @@ import java.util.List;
  * Node that stores an actor
  */
 public class ActorNode implements Node {
-	String name;
-	List<MovieNode> movies;
+	private String name;
+	private List<MovieNode> movies;
 
 	/**
 	 * Constructor

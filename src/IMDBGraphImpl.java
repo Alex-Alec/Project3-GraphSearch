@@ -9,6 +9,7 @@ import java.util.function.*;
 public class IMDBGraphImpl implements IMDBGraph {
 	private static List<ActorNode> actorList;
 	private static List<MovieNode> movieList;
+	private HashMap<String, MovieNode> movieMap;
 
 	/**
 	 * creates an IMDBGraphImpl instance that loads and parses the actors and actresses files
@@ -19,6 +20,7 @@ public class IMDBGraphImpl implements IMDBGraph {
 	public IMDBGraphImpl (String actorsFilename, String actressesFilename) throws IOException {
 		actorList = new ArrayList<>();
 		movieList = new ArrayList<>();
+		movieMap = new HashMap<>();
 		processActors(actorsFilename);
 		processActors(actressesFilename);
 	}
@@ -115,7 +117,18 @@ public class IMDBGraphImpl implements IMDBGraph {
 					counter++;
 					int lastIdxOfTab = line.lastIndexOf("\t");
 					final String movieName = parseMovieName(line.substring(lastIdxOfTab + 1));
-					boolean found = false;
+					if (movieMap.containsKey (movieName)) {
+						MovieNode currentMovie = movieMap.get(movieName);
+						currentMovie.addActor(mostRecent);
+						actorList.get(actorList.size()-1).addMovie(currentMovie);
+					} else {
+						MovieNode newMovie = new MovieNode(movieName);
+						newMovie.addActor(mostRecent);
+						movieList.add(newMovie);
+						actorList.get(actorList.size()-1).addMovie(newMovie);
+						movieMap.put(movieName, newMovie);
+					}
+					/*
 					for(MovieNode movie: movieList){ // if the movie is already in movieList
 						if(movie.getName().equals(movieName)){
 							movie.addActor(mostRecent);
@@ -130,7 +143,7 @@ public class IMDBGraphImpl implements IMDBGraph {
 						newMovie.addActor(mostRecent);
 						movieList.add(newMovie);
 						actorList.get(actorList.size()-1).addMovie(newMovie);
-					}
+					} */
 				}
 			}
 		}
