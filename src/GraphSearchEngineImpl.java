@@ -58,11 +58,12 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 		List<Node> result = new ArrayList<>();
 		result.add(t);
 		Node current = t;
+		boolean modified = true;
 
-		int shortestDistance = visitedDistances.get(t);
+		int shortestDistance = visitedDistances.get(t)-1;
 		System.out.println(shortestDistance);
-		while(!current.equals(s)){
-			shortestDistance--;
+		while(!current.equals(s) && modified){
+			modified = false;
 			for(Node neighbor: current.getNeighbors()){
 
 				// If the node wasn't visited on the path to finding the shortest distance, then ignore
@@ -71,9 +72,12 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 				}
 
 				// If this node is the correct distance from s, then move along it
-				if(visitedDistances.get(neighbor) == shortestDistance){
+				if(visitedDistances.get(neighbor) == shortestDistance) {
 					result.add(neighbor);
 					current = neighbor;
+					shortestDistance--;
+					modified = true;
+					break;
 				}
 			}
 		}
