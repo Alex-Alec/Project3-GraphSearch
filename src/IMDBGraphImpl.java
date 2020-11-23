@@ -9,7 +9,7 @@ import java.util.function.*;
 public class IMDBGraphImpl implements IMDBGraph {
 	private static List<ActorNode> actorList;
 	private static List<MovieNode> movieList;
-	private HashMap<String, MovieNode> movieMap;
+	private static HashMap<String, MovieNode> movieMap;
 
 	/**
 	 * creates an IMDBGraphImpl instance that loads and parses the actors and actresses files
@@ -30,6 +30,7 @@ public class IMDBGraphImpl implements IMDBGraph {
 	 * @return actorList
 	 */
 	public Collection<? extends Node> getActors () {
+		System.out.println("actorlist size " + actorList.size());
 		return actorList;
 	}
 
@@ -38,6 +39,8 @@ public class IMDBGraphImpl implements IMDBGraph {
 	 * @return movieList
 	 */
 	public Collection<? extends Node> getMovies () {
+		System.out.println(movieMap.keySet().size());
+		System.out.println("movelist size " + movieList.size());
 		return movieList;
 	}
 
@@ -117,10 +120,11 @@ public class IMDBGraphImpl implements IMDBGraph {
 					counter++;
 					int lastIdxOfTab = line.lastIndexOf("\t");
 					final String movieName = parseMovieName(line.substring(lastIdxOfTab + 1));
-					if (movieMap.containsKey (movieName)) {
+					if (movieMap.containsKey(movieName)) {
 						MovieNode currentMovie = movieMap.get(movieName);
 						currentMovie.addActor(mostRecent);
-						actorList.get(actorList.size()-1).addMovie(currentMovie);
+						movieMap.put(movieName, currentMovie);
+						actorList.get(actorList.size()-1).addMovie(movieMap.get(movieName));
 					} else {
 						MovieNode newMovie = new MovieNode(movieName);
 						newMovie.addActor(mostRecent);
@@ -128,22 +132,6 @@ public class IMDBGraphImpl implements IMDBGraph {
 						actorList.get(actorList.size()-1).addMovie(newMovie);
 						movieMap.put(movieName, newMovie);
 					}
-					/*
-					for(MovieNode movie: movieList){ // if the movie is already in movieList
-						if(movie.getName().equals(movieName)){
-							movie.addActor(mostRecent);
-							actorList.get(actorList.size()-1).addMovie(movie);
-							found = true;
-							break;
-						}
-					}
-
-					if(!found){ // if the movie is not already in movieList
-						MovieNode newMovie = new MovieNode(movieName);
-						newMovie.addActor(mostRecent);
-						movieList.add(newMovie);
-						actorList.get(actorList.size()-1).addMovie(newMovie);
-					} */
 				}
 			}
 		}

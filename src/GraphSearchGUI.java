@@ -94,13 +94,14 @@ public class GraphSearchGUI extends Application {
 		// Load graph data and initialize the ListViews
 		final IMDBGraph graph;
 		try {
-			graph = new IMDBGraphImpl("IMDB/actors_first_100000_lines.list", "IMDB/actresses_first_100000_lines.list");
+			graph = new IMDBGraphImpl("IMDB/actors.list", "IMDB/actresses.list");
 		} catch (IOException ioe) {
 			System.out.println("Couldn't load data");
 			return;
 		}
 
 		final ListView<String> actorsList1 = new ListView<String>(getSortedObservableList(graph.getActors()));
+		graph.getMovies();
 		final ListView<String> actorsList2 = new ListView<String>(getSortedObservableList(graph.getActors()));
 		final ListView<String> resultsList = new ListView<String>();
 

@@ -23,7 +23,6 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 
 		// Run BFS to find shortest distance
 		while(!nodesToVisit.isEmpty()) {
-
 			Node current = nodesToVisit.remove();
 			if (current.equals(t)) {
 				break;
@@ -35,6 +34,7 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 					visitedDistances.put(neighbor, visitedDistances.get(current) + 1);
 					nodesToVisit.add(neighbor);
 				}
+
 			}
 		}
 
@@ -42,10 +42,6 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 		if(!visitedDistances.containsKey(t)){
 			return null;
 		}
-
-		List<Node> result = new ArrayList<>();
-		result.add(t);
-		Node current = t;
 
 		// Run find shortest path, knowing the shortest distance
 		return findPathFromDistance(s, t, visitedDistances);
@@ -64,7 +60,8 @@ public class GraphSearchEngineImpl implements GraphSearchEngine {
 		Node current = t;
 
 		int shortestDistance = visitedDistances.get(t);
-		while(current != s){
+		System.out.println(shortestDistance);
+		while(!current.equals(s)){
 			shortestDistance--;
 			for(Node neighbor: current.getNeighbors()){
 
